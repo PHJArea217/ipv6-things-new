@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html><head><title><%= title || domain_ || ipAddress %></title>
+<% if (domain_) { %><link rel="canonical" href="https://<%= domain_ %>" /><% } %>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="title" content="<%= title || domain_ || ipAddress %>" />
+<style>
+.ipv6-contents {
+ margin-left: auto;
+ margin-right: auto;
+ text-align: center;
+}
+.box-header {
+ font-size: 150%;
+ font-weight: bold;
+ font-family: "DejaVu Sans", sans-serif;
+ margin-top: 20px;
+ margin-bottom: 5px;
+ margin-left: auto;
+ margin-right: auto;
+ padding-left: 5px;
+ padding-right: 5px;
+ color: <%= textColor %>;
+ display: inline-block;
+}
+.box-text-container {
+ margin-left: auto;
+ margin-right: auto;
+ padding-bottom: 1em;
+}
+.box-text {
+ margin-left: 0.25em;
+ margin-right: 0.25em;
+ font-size: 200%;
+ font-weight: bold;
+ font-family: "Liberation Serif", "Times New Roman", serif;
+ border: 1px solid black;
+ min-width: 400px;
+ padding-left: 1em;
+ padding-right: 1em;
+ display: inline-block;
+}
+.box-text-small {
+ font-size: 160%;
+ max-width: 500px;
+}
+.box-text-2 {
+ margin-top: 0.5em;
+}
+.auxtext-container {
+ font-family: "DejaVu Sans", Arial, sans-serif;
+ max-width: 600px;
+ margin-left: auto;
+ margin-right: auto;
+ background-color: #fff;
+ padding: 10px;
+ text-align: center;
+ border-radius: 20px;
+}
+.force-center {
+ text-align: center;
+}
+body {
+ background-color: #<%= color || "ccf" %>;
+}
+.auxtext-common {
+ border: 1px solid black;
+ min-width: 60%;
+ margin-left: 2em;
+ margin-right: 2em;
+ margin-top: 0.5em;
+ margin-bottom: 0.5em;
+ padding-top: 1em;
+ padding-bottom: 1em;
+ padding-left: 1em;
+ padding-right: 1em;
+}
+.auxtext-common-big {
+ border: 1px solid black;
+ min-width: 60%;
+ margin-top: 0.5em;
+ margin-bottom: 0.5em;
+ padding-top: 1em;
+ padding-bottom: 1em;
+ padding-left: 1em;
+ padding-right: 1em;
+}
+.title {
+ font-size: 36pt;
+ font-weight: bold;
+ padding: 10px;
+ margin-left: auto;
+ margin-right: auto;
+ width: 8em;
+ <%- color ? "" : "background-color: #eef;" %>
+}
+.hasStatic {
+ border: 1px solid black;
+ min-width: 60%;
+ margin-left: 2em;
+ margin-right: 2em;
+ margin-top: 0.5em;
+ margin-bottom: 0.5em;
+ padding-top: 1em;
+ padding-bottom: 1em;
+ padding-left: 1em;
+ padding-right: 1em;
+ background-color: #e0ffff;
+}
+@media (max-width: 600px) {
+ .box-header {
+  font-size: 150%;
+ }
+ .box-text {
+  font-size: 150%;
+  min-width: 65%;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+ }
+ .box-text-small {
+  font-size: 120%;
+ }
+}
+@media (max-width: 400px) {
+ .box-header {
+  font-size: 120%;
+ }
+ .box-text {
+  font-size: 120%;
+  min-width: 65%;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+ }
+ .box-text-small {
+  font-size: 100%;
+ }
+}
+</style>
+</head>
+<body>
+ <div class="ipv6-contents">
+<!--  <div class="title"><a style="color: ${textColor}; text-decoration: none;" href="https://ipv6-things.srv.peterjin.org/">IPv6 Things</a></div> -->
+  <div class="ipv6-contents-h box-text-container">
+   <div><div class="box-header">You are connected to</div></div>
+   <% if (domain_) { %>
+    <div class="box-text" style="background-color: #dfd;"><a style="text-decoration: none; color: #000" href="https://<%= domain_ %>/"><%= domain_ %></a></div>
+   <% } %>
+   <% if (domain_ && auxtext) { %>
+   <div><div class="box-text box-text-small box-text-2" style="background-color: #dff"><%= auxtext %></div></div>
+   <% } %>
+   <% if (domain_) { %>
+    <div><div class="box-header">whose IPv6 address is</div></div>
+   <% } %>
+   <div class="box-text" style="background-color: #ffd;"><a style="text-decoration: none; color: #000" href="http://[<%= ipAddress %>]"><%= ipAddress %></a></div>
+   <% if (auxtext && !domain_) { %>
+   <div><div class="box-text box-text-small box-text-2" style="background-color: #dff"><%= auxtext %></div></div>
+   <% } %>
+  </div>
+  <div class="auxtext-container">
+    <% if (Array.isArray(randomLinks)) { %>
+    <p class="force-center">Random:
+     <a href="/random?type=any">any</a>
+     <% for (let link of randomLinks) { %>
+     | <a href="/random?type=<%= link[0] %>"><%= link[1] || link[0] %></a>
+     <% } %>
+    </p>
+    <% } %>
+    <div class="auxtext"><%- auxtext1 || "" %></div>
+   <% if (hasStatic) { %><div class="hasStatic">This object has its own <a href="<%= hasStatic %>">website</a>.</div><% } %>
+   <div class="auxtext2">
+	   <%- auxtext2 || "" %>
+   </div>
+   <hr />
+   <% if (homepage) { %><div class="bottom force-center"><a href="https://<%= homepage %>">Back to Start Page</a></div><hr /><% } %>
+   <div class="bottom force-center">Current date/time: <%= new Date().toISOString().replace(/\....Z/, "").replace("T", " ") %> (UTC) <br /> Your IP address is <%= remoteIP %></div>
+  </div>
+ </div>
+</body></html>
